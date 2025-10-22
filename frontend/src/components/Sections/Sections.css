@@ -1,0 +1,264 @@
+.section {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.welcome-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: center;
+}
+
+.text-content {
+  grid-column: 1;
+  grid-row: 1;
+  
+}
+
+.welcome-text {
+  color: #524D4D;
+  font-size: 24px;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.image-content {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-image {
+  width: 500px;
+  height: 448px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.button-container {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-content {
+  display: grid;
+  grid-template-columns: 552px 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.text-content {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.welcome-text {
+  color: #524D4D;
+  text-align: center;
+  font-family: "Kdam Thmor Pro";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.image-content {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-image {
+  width: 500px;
+  height: 448px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.button-container {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}
+
+/* LINHA DIVISÓRIA */
+.line-divider {
+  width: 1230px;
+  height: 0;
+  border: 1px black solid;
+  margin: 40px auto;
+}
+
+/* SUBSESSÃO TCG */
+.tcg-subsection {
+  display: grid;
+  grid-template-columns: 552px 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.tcg-text {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.tcg-title {
+  color: #524D4D;
+  font-size: 36px;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tcg-description {
+  color: #524D4D;
+  font-size: 24px;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.tcg-image {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+}
+
+.tcg-img {
+  width: 600px;
+  height: 816px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.tcg-button {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.competitive-subsection {
+  display: grid;
+  grid-template-columns: 463px 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: center;
+  margin: 80px 0;
+}
+
+.competitive-image {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+}
+
+.competitive-img {
+  width: 463px;
+  height: 561px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.competitive-text {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.competitive-title {
+  color: #524D4D;
+  font-size: 36px;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.competitive-description {
+  color: #524D4D;
+  font-size: 24px;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.competitive-button {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}
+
+/* === PARTE 4: SEÇÃO POKÉMON ALEATÓRIO === */
+.random-subsection {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: center;
+  margin: 80px 0;
+}
+
+.random-text {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.random-title {
+  color: #524D4D;
+  font-size: 36px;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.random-description {
+  color: #524D4D;
+  font-size: 24px;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.random-image {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+}
+
+.random-img {
+  width: 500px;
+  height: 488px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.random-button {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}

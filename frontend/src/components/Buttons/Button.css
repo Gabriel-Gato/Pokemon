@@ -1,0 +1,29 @@
+.button {
+  width: 327px;
+  height: 96px;
+  background: #EF3131;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  
+  color: white;
+  font-size: 36px;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: #d42b2b;
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+}

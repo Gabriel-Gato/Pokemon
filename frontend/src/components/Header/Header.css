@@ -1,0 +1,22 @@
+.header {
+  width: 100%;
+  height: 180px;
+  background: #282323;
+  outline: 3px #790002 solid;
+  display: flex;
+  align-items: center;
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  width: 147px;
+  height: 147px;
+}

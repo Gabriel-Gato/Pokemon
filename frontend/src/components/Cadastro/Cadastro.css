@@ -1,0 +1,247 @@
+.cadastro-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: white;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cadastro-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.cadastro-card {
+  width: 1050px;
+  min-height: 650px;
+  background: #FAFAFA;
+  border-radius: 30px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 40px 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+}
+
+.cadastro-title {
+  text-align: center;
+  color: black;
+  font-size: 64px;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.cadastro-form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.form-column {
+  flex: 1;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-label {
+  text-align: left;
+  color: black;
+  font-size: 24px;
+  font-family: 'Kdam Thmor', sans-serif;
+  font-weight: 400;
+  padding-left: 15px;
+  margin-bottom: 5px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 15px;
+}
+
+.input-icon {
+  flex-shrink: 0;
+  color: #666;
+  width: 24px;
+  height: 24px;
+}
+
+.input-field {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  font-family: 'Kdam Thmor', sans-serif;
+  width: 100%;
+  outline: none;
+  padding: 10px 0;
+}
+
+.input-field::placeholder {
+  color: #999;
+}
+
+.input-line {
+  width: 425px;
+  height: 0;
+  border: 1px solid black;
+  margin-top: 5px;
+  align-self: center;
+}
+
+.checkboxes-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 30px 0;
+  align-items: center;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.checkbox-input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.checkbox-text {
+  color: black;
+  font-size: 16px;
+  font-family: 'Kdam Thmor', sans-serif;
+  font-weight: 400;
+}
+
+.checkbox-link {
+  color: #CF2B58 !important;
+  cursor: pointer;
+}
+
+.checkbox-link:hover {
+  text-decoration: underline;
+}
+
+/* CONTAINER DO BOTÃO CENTRALIZADO */
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cadastro-button {
+  width: 261px;
+  height: 87px;
+  background: #CF2B58;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  
+  color: white;
+  font-size: 40px;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  
+  transition: all 0.3s ease;
+}
+
+.cadastro-button:hover {
+  background: #b5244c;
+  transform: translateY(-2px);
+}
+
+.login-link {
+  margin-top: 30px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.login-link span:first-child {
+  color: black;
+  font-size: 16px;
+  font-family: 'Kdam Thmor', sans-serif;
+  font-weight: 400;
+}
+
+.login-text {
+  color: #CF2B58 !important;
+  font-size: 16px;
+  font-family: 'Kdam Thmor', sans-serif;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.login-text:hover {
+  color: #a52046 !important;
+}
+
+/* ... (mantenha todo o CSS anterior) ... */
+
+/* ESTILOS DE ERRO */
+.error-message {
+  color: #CF2B58;
+  font-size: 14px;
+  font-family: 'Kdam Thmor', sans-serif;
+  margin-top: 5px;
+  padding-left: 15px;
+}
+
+.input-field.error {
+  color: #CF2B58;
+}
+
+.error-line {
+  border-color: #CF2B58 !important;
+}
+
+.error-checkbox {
+  outline: 2px solid #CF2B58;
+  border-radius: 3px;
+}
+
+.checkbox-error {
+  margin-left: 10px;
+}
+
+/* Destaque para campos com erro */
+.input-group:has(.error) .input-label {
+  color: #CF2B58;
+}
+
+.input-group:has(.error) .input-icon path {
+  fill: #CF2B58;
+}
