@@ -23,6 +23,9 @@ public class Login {
     @Column
     private String imagem;
 
+    public Login() {
+    }
+
     public Login(Long id, String nome, String email, String senha, String imagem) {
         this.id = id;
         this.nome = nome;
