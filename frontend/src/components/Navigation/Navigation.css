@@ -1,7 +1,7 @@
 .navigation {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribui o espaço */
+  justify-content: space-between;
   flex: 1;
   margin-left: 40px;
 }
@@ -15,7 +15,7 @@
   transform: translateX(-50%);
 }
 
-/* Restante do CSS permanece igual */
+
 .menu-item {
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@
   border: 5px white solid;
 }
 
-/* Restante do CSS permanece igual */
+
 
 .user-text {
   margin-top: 2px;
@@ -102,12 +102,12 @@
 }
 
 .menu-item.active .menu-text {
-  color: #EF3131 !important; /* Vermelho para texto ativo */
+  color: #EF3131 !important;
   font-weight: 500;
 }
 
 .menu-item.active .menu-underline {
-  border-color: #EF3131 !important; /* Vermelho para underline ativo */
+  border-color: #EF3131 !important;
   border-width: 2px;
 }
 .menu-item:hover .menu-text {
@@ -176,7 +176,7 @@
   margin-top: 4px;
 }
 
-/* Efeito hover para o user */
+
 .user-section:hover .user-text span {
   color: #EF3131;
 }

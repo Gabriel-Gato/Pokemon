@@ -23,7 +23,7 @@ public class TcgController {
         return new RestTemplate(factory);
     }
 
-    // 🔹 CORRIGIDO: Tenta múltiplas combinações até encontrar uma imagem que funcione
+
     private Map<String, String> buildImageUrls(Map<String, Object> card) {
         Map<String, String> imageUrls = new HashMap<>();
 
@@ -31,19 +31,18 @@ public class TcgController {
             return imageUrls;
         }
 
-        // Extrai informações do card
+
         String setId = null;
         String cardNumber = null;
         String serie = null;
         String cardId = (String) card.get("id");
 
-        // Pega informações do set
         if (card.get("set") instanceof Map) {
             @SuppressWarnings("unchecked")
             Map<String, Object> setInfo = (Map<String, Object>) card.get("set");
             setId = (String) setInfo.get("id");
 
-            // Pega a série
+
             if (setInfo.get("serie") instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> serieInfo = (Map<String, Object>) setInfo.get("serie");
@@ -51,13 +50,12 @@ public class TcgController {
             }
         }
 
-        // Pega o número do card
+
         cardNumber = (String) card.get("localId");
         if (cardNumber == null) {
             cardNumber = (String) card.get("number");
         }
 
-        // Lista de possíveis URLs para tentar (em ordem de prioridade)
         List<String> possibleUrls = new ArrayList<>();
 
         // Método 1: Usando série, set e número (formato mais comum)
@@ -69,13 +67,13 @@ public class TcgController {
             possibleUrls.add(String.format("%s/en/%s/%s/%s/low.webp", TCGDEX_ASSETS_URL, serie, setId, cardNumber));
         }
 
-        // Método 2: Usando apenas set e número (para casos como ru1)
+
         if (setId != null && cardNumber != null) {
             possibleUrls.add(String.format("%s/en/%s/%s/high.png", TCGDEX_ASSETS_URL, setId, cardNumber));
             possibleUrls.add(String.format("%s/en/%s/%s/high.webp", TCGDEX_ASSETS_URL, setId, cardNumber));
             possibleUrls.add(String.format("%s/en/%s/%s.png", TCGDEX_ASSETS_URL, setId, cardNumber));
 
-            // Tentativa especial para ru1
+
             if ("ru1".equals(setId)) {
                 possibleUrls.add(String.format("%s/en/ru/%s/%s/high.png", TCGDEX_ASSETS_URL, setId, cardNumber));
                 possibleUrls.add(String.format("%s/en/ru/%s/%s/high.webp", TCGDEX_ASSETS_URL, setId, cardNumber));
@@ -83,7 +81,7 @@ public class TcgController {
             }
         }
 
-        // Método 3: Fallback usando cardId
+
         if (cardId != null) {
             String[] parts = cardId.split("-");
             if (parts.length >= 3) {
@@ -95,7 +93,7 @@ public class TcgController {
             }
         }
 
-        // Tenta encontrar uma URL que funcione
+
         String workingUrl = findWorkingImageUrl(possibleUrls);
 
         if (workingUrl != null) {
@@ -117,7 +115,7 @@ public class TcgController {
         return imageUrls;
     }
 
-    // 🔹 Testa uma lista de URLs e retorna a primeira que funciona
+
     private String findWorkingImageUrl(List<String> urls) {
         RestTemplate restTemplate = getRestTemplate();
 
@@ -129,14 +127,14 @@ public class TcgController {
                     return url;
                 }
             } catch (Exception e) {
-                // Continua para a próxima URL
+
 
             }
         }
         return null;
     }
 
-    // 🔹 Formata os cards recebidos da API para incluir URLs de imagem
+
     private List<Map<String, Object>> formatCards(Object[] cards) {
         List<Map<String, Object>> formattedCards = new ArrayList<>();
 
@@ -153,7 +151,7 @@ public class TcgController {
                 formattedCard.put("hp", card.get("hp"));
                 formattedCard.put("types", card.get("types"));
 
-                // Set info
+
                 if (card.get("set") instanceof Map) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> setInfo = (Map<String, Object>) card.get("set");
@@ -171,7 +169,7 @@ public class TcgController {
                     formattedCard.put("set", simpleSet);
                 }
 
-                // URLs de imagem - USANDO O NOVO MÉTODO INTELIGENTE
+
                 Map<String, String> images = buildImageUrls(card);
                 formattedCard.put("images", images);
                 formattedCard.put("imageFallback", images.isEmpty());
@@ -183,7 +181,7 @@ public class TcgController {
         return formattedCards;
     }
 
-    // 🔹 Buscar todas as cartas
+
     @GetMapping("/all-cards")
     public ResponseEntity<?> getAllCards() {
         try {
@@ -221,7 +219,7 @@ public class TcgController {
         }
     }
 
-    // 🔹 Buscar carta específica
+
     @GetMapping("/cards/{id}")
     public ResponseEntity<?> getCardById(@PathVariable String id) {
         try {
@@ -251,7 +249,7 @@ public class TcgController {
         }
     }
 
-    // 🔹 Teste inteligente de URLs para um card específico
+
     @GetMapping("/test-card-images/{id}")
     public ResponseEntity<?> testCardImages(@PathVariable String id) {
         try {
@@ -267,7 +265,6 @@ public class TcgController {
             @SuppressWarnings("unchecked")
             Map<String, Object> card = (Map<String, Object>) response.getBody();
 
-            // Extrai informações para debug
             String cardId = (String) card.get("id");
             String cardName = (String) card.get("name");
             String localId = (String) card.get("localId");
@@ -288,10 +285,10 @@ public class TcgController {
                 }
             }
 
-            // Gera várias URLs possíveis
+
             List<Map<String, Object>> urlTests = new ArrayList<>();
 
-            // Diferentes combinações possíveis
+
             String[][] combinations = {
                     {serie, setId, localId != null ? localId : number, "high", "png"},
                     {serie, setId, localId != null ? localId : number, "high", "webp"},
@@ -351,7 +348,7 @@ public class TcgController {
         }
     }
 
-    // 🔹 Debug detalhado do card
+
     @GetMapping("/debug-card/{id}")
     public ResponseEntity<?> debugCard(@PathVariable String id) {
         try {
@@ -386,7 +383,7 @@ public class TcgController {
                     }
                 }
 
-                // URLs finais que serão usadas
+
                 Map<String, String> finalUrls = buildImageUrls(card);
                 debugInfo.put("finalImageUrls", finalUrls);
             }

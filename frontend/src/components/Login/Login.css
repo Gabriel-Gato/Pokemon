@@ -24,7 +24,7 @@
 
 .login-card {
   width: 570px;
-  min-height: 722px; /* Mudado para min-height */
+  min-height: 722px;
   background: #FAFAFA;
   border-radius: 30px;
   position: relative;
@@ -34,7 +34,6 @@
   align-items: center;
   padding: 40px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  /* Garante que o conteúdo não ultrapasse */
   overflow: hidden;
 }
 
@@ -44,7 +43,7 @@
   font-size: 64px;
   font-family: 'League Spartan', sans-serif;
   font-weight: 400;
-  margin-bottom: 40px; /* Reduzido */
+  margin-bottom: 40px;
   margin-top: 20px;
 }
 
@@ -52,8 +51,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 40px; /* Reduzido */
-  flex: 1; /* Ocupa espaço disponível */
+  gap: 40px;
+  flex: 1;
 }
 
 .input-group {
@@ -140,7 +139,6 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  /* Garante que fique na parte de baixo do card */
   margin-bottom: 20px;
 }
 

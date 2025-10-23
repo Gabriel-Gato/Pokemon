@@ -12,18 +12,18 @@ const Competitive = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [notification, setNotification] = useState({ show: false, message: '', pokemonName: '', type: 'success' });
 
-  // Efeito para adicionar classe ao body apenas nesta página
+
   useEffect(() => {
-    // Adiciona a classe quando o componente monta
+
     document.body.classList.add('competitive-body');
     
-    // Remove a classe quando o componente desmonta
+
     return () => {
       document.body.classList.remove('competitive-body');
     };
   }, []);
 
-  // Tiers baseados nas estatísticas
+
   const tiers = [
     { id: 'all', name: 'Todos Pokémon', description: 'Todos os 1000+ Pokémon' },
     { id: 'uber', name: 'Uber', description: 'Lendários e muito fortes' },
@@ -35,36 +35,35 @@ const Competitive = () => {
     { id: 'lc', name: 'Little Cup', description: 'Pokémon básicos' }
   ];
 
-  // Buscar TODOS os Pokémon da PokeAPI - VERSÃO CORRIGIDA
+
   const fetchAllPokemon = async () => {
     try {
       setLoading(true);
       
-      // Buscar lista com todos os Pokémon
+
       const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
       const data = await response.json();
       
-      // Buscar detalhes de cada Pokémon
+
       const pokemonDetails = await Promise.all(
         data.results.map(async (pokemon) => {
           try {
             const res = await fetch(pokemon.url);
             const details = await res.json();
             
-            // LÓGICA MAIS PERMISSIVA PARA IMAGENS
+
             const sprite = 
               details.sprites.other?.['official-artwork']?.front_default ||
               details.sprites.front_default ||
               details.sprites.front_shiny ||
               details.sprites.back_default;
             
-            // Se não tem nenhuma sprite, usar fallback
+
             if (!sprite) {
-              console.log(`⏭️  Pulando ${pokemon.name} - sem sprites`);
               return null;
             }
             
-            // Gerar dados competitivos
+
             const competitiveData = generateCompetitiveData(details);
             
             return {
@@ -85,10 +84,10 @@ const Competitive = () => {
         })
       );
       
-      // FILTRO MAIS PERMISSIVO - apenas remove null
+
       const validPokemon = pokemonDetails.filter(pokemon => pokemon !== null);
       
-      // ORDENAR POR USAGE
+
       const sortedByUsage = validPokemon.sort((a, b) => b.usage - a.usage);
       
       setPokemons(sortedByUsage);
@@ -102,7 +101,7 @@ const Competitive = () => {
     }
   };
 
-  // Gerar dados competitivos realistas baseados nas estatísticas
+
   const generateCompetitiveData = (pokemon) => {
     const stats = pokemon.stats.reduce((acc, stat) => {
       acc[stat.stat.name] = stat.base_stat;
@@ -111,7 +110,7 @@ const Competitive = () => {
 
     const totalBST = Object.values(stats).reduce((a, b) => a + b, 0);
     
-    // Calcular tier baseado no BST e estatísticas
+
     let tier = 'nu';
     let usage = 0;
     
@@ -135,7 +134,7 @@ const Competitive = () => {
       usage = Math.random() * 4 + 1; // 1-5%
     }
 
-    // Ajustar baseado em Pokémon específicos conhecidos
+
     if (['mewtwo', 'kyogre', 'groudon', 'rayquaza', 'arceus'].includes(pokemon.name)) {
       tier = 'uber';
       usage = 25 + Math.random() * 10;
@@ -144,7 +143,7 @@ const Competitive = () => {
       usage = 15 + Math.random() * 8;
     }
 
-    // Gerar movesets baseados no tipo
+
     const movesets = generateMovesets(pokemon);
     const { counters, checks } = generateCounters(pokemon);
 
@@ -157,7 +156,7 @@ const Competitive = () => {
     };
   };
 
-  // Gerar movesets realistas baseados no tipo
+
   const generateMovesets = (pokemon) => {
     const types = pokemon.types.map(t => t.type.name);
     const stats = pokemon.stats.reduce((acc, stat) => {
@@ -193,7 +192,7 @@ const Competitive = () => {
 
     const movesets = [];
     
-    // Moveset Ofensivo
+
     const offensiveMoves = types.flatMap(type => typeMoves[type] || []).slice(0, 3);
     if (offensiveMoves.length >= 2) {
       movesets.push({
@@ -206,7 +205,7 @@ const Competitive = () => {
       });
     }
 
-    // Moveset Defensivo
+
     if (isDefensive) {
       movesets.push({
         name: 'Defensive Wall',
@@ -232,14 +231,14 @@ const Competitive = () => {
     return pokemon.abilities.find(a => !a.is_hidden)?.ability?.name || 'Overgrow';
   };
 
-  // Gerar counters baseados nos tipos
+
   const generateCounters = (pokemon) => {
     const types = pokemon.types.map(t => t.type.name);
     
-    // Tipos que são super efetivos contra este Pokémon
+
     const superEffectiveTypes = getSuperEffectiveTypes(types);
     
-    // Pokémon comuns que são desses tipos
+
     const commonCounters = getCommonPokemonByTypes(superEffectiveTypes).slice(0, 3);
     const commonChecks = getCommonPokemonByTypes(superEffectiveTypes).slice(3, 6);
 
@@ -299,14 +298,13 @@ const Competitive = () => {
     return [...new Set(types.flatMap(type => commonPokemon[type] || []))];
   };
 
-  // Filtrar Pokémon baseado no tier selecionado
+
   const filteredPokemons = pokemons.filter(pokemon => {
     const matchesTier = selectedTier === 'all' || pokemon.tier === selectedTier;
     const matchesSearch = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTier && matchesSearch;
   });
 
-  // Funções de notificação
   const addToTeam = (pokemon) => {
     if (team.length >= 6) {
       showNotification(`Time cheio! Máximo 6 Pokémon.`, pokemon.name, 'error');
@@ -377,7 +375,7 @@ const Competitive = () => {
       return acc;
     }, {});
 
-    // Verificar cobertura de tipos
+
     const missingTypes = ['water', 'fire', 'grass', 'electric'].filter(type => !typeCount[type]);
     if (missingTypes.length > 0) {
       suggestions.push(`Falta cobertura para os tipos: ${missingTypes.join(', ')}`);

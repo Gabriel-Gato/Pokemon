@@ -86,12 +86,12 @@
 }
 
 .search-input::placeholder {
-  color: #666666 !important; /* Placeholder cinza escuro */
+  color: #666666 !important;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
 
-/* Quando estiver em foco mantém o texto preto */
+
 .search-input:focus {
   outline: none;
   border-color: #CF2B58;
@@ -216,15 +216,15 @@
 }
 
 .pokemon-name {
-  color: #000000 !important; /* Preto puro com força máxima */
+  color: #000000 !important;
   font-size: 1.6rem;
   font-weight: 700;
   margin: 15px 0;
   text-transform: capitalize;
   font-family: 'Oxanium', cursive;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-text-fill-color: #000000 !important; /* Remove o gradiente */
-  background: none !important; /* Remove qualquer fundo de gradiente */
+  -webkit-text-fill-color: #000000 !important;
+  background: none !important;
 }
 
 .pokemon-types {
@@ -252,7 +252,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Cores para os tipos Pokémon */
+
 .type-grass { background: linear-gradient(135deg, #78C850, #5aaf3a); }
 .type-fire { background: linear-gradient(135deg, #F08030, #d4691a); }
 .type-water { background: linear-gradient(135deg, #6890F0, #4a75d4); }
@@ -340,7 +340,7 @@
   font-weight: 400;
 }
 
-/* Efeito de shake quando não há resultados */
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -353,7 +353,7 @@
   animation: shake 0.4s ease-in-out;
 }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
   .pokedex-container {
     padding: 20px 15px;
@@ -473,12 +473,12 @@
 .modal-name {
   font-family: 'Oxanium', cursive;
   font-size: 2.5rem;
-  color: #000000 !important; /* Preto puro com força máxima */
+  color: #000000 !important;
   font-weight: 800;
   text-transform: capitalize;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  -webkit-text-fill-color: #000000 !important; /* Remove o gradiente */
-  background: none !important; /* Remove qualquer fundo de gradiente */
+  -webkit-text-fill-color: #000000 !important;
+  background: none !important;
 }
 
 .modal-body {
@@ -638,7 +638,7 @@
   padding: 60px 20px;
 }
 
-/* Responsivo para o modal */
+
 @media (max-width: 768px) {
   .modal-content {
     padding: 20px;
@@ -674,7 +674,7 @@
   }
 }
 
-/* Image Selector Styles */
+
 .main-image-container {
   position: relative;
   margin-bottom: 20px;
@@ -735,7 +735,7 @@
   filter: brightness(0) invert(1);
 }
 
-/* Tooltip para os botões */
+
 .image-option {
   position: relative;
 }
@@ -778,7 +778,7 @@
   visibility: visible;
 }
 
-/* Efeito de transição suave na imagem principal */
+
 .modal-main-image {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -788,7 +788,7 @@
   transform: scale(0.9);
 }
 
-/* Responsivo para o image selector */
+
 @media (max-width: 768px) {
   .image-selector {
     gap: 8px;
@@ -811,7 +811,7 @@
   }
 }
 
-/* Type Filter Buttons - Versão Organizada */
+
 .type-filter-buttons {
   display: flex;
   flex-direction: column;
@@ -889,7 +889,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Efeito de brilho nos botões ativos */
+
 .type-filter-btn.active {
   animation: glow 2s ease-in-out infinite alternate;
 }
@@ -903,7 +903,7 @@
   }
 }
 
-/* Cores específicas para cada tipo (mantenha as mesmas cores) */
+
 .type-filter-btn.all { background: linear-gradient(135deg, #6c757d, #495057); border: 2px solid #495057; }
 .type-filter-btn.grass { background: linear-gradient(135deg, #78C850, #5aaf3a); border: 2px solid #5aaf3a; }
 .type-filter-btn.fire { background: linear-gradient(135deg, #F08030, #d4691a); border: 2px solid #d4691a; }
@@ -924,7 +924,7 @@
 .type-filter-btn.ghost { background: linear-gradient(135deg, #705898, #5a477a); border: 2px solid #5a477a; }
 .type-filter-btn.steel { background: linear-gradient(135deg, #B8B8D0, #9a9ab3); border: 2px solid #9a9ab3; }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
   .type-filter-buttons {
     max-width: 100%;
@@ -972,7 +972,7 @@
   font-size: 1rem;
 }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
   .image-not-available {
     width: 220px;
@@ -981,7 +981,7 @@
   }
 }
 
-/* Adicione estas regras ao seu CSS existente */
+
 
 .image-not-available {
   width: 300px;
@@ -1013,14 +1013,14 @@
   transition: opacity 0.15s ease;
 }
 
-/* Garantir que as imagens dos botões sejam quadradas */
+
 .image-option img {
   width: 40px;
   height: 40px;
   object-fit: contain;
 }
 
-/* Estilo para quando não há imagens disponíveis no seletor */
+
 .image-selector:empty::before {
   content: "Nenhuma imagem disponível";
   color: #666;

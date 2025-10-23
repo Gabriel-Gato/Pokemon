@@ -6,16 +6,16 @@ import './TCG.css';
 const PAGE_SIZE = 20;
 const API_BASE_URL = 'http://localhost:8080/api/tcg';
 
-// Configuração do localforage
+
 localforage.config({
   name: "PokemonTCG",
   storeName: "cardsCache"
 });
 
-// ✅ Cache de imagens em memória
+
 const imageCache = new Map();
 
-// ✅ Pré-carregador de imagens
+
 const preloadImage = (src) => {
   return new Promise((resolve, reject) => {
     if (imageCache.has(src)) {
@@ -33,7 +33,7 @@ const preloadImage = (src) => {
   });
 };
 
-// ✅ Função para verificar se uma carta tem imagem
+
 const hasValidImage = (card) => {
   return card.images && (
     card.images.low ||
@@ -43,7 +43,7 @@ const hasValidImage = (card) => {
   );
 };
 
-// ✅ Função de filtro otimizada
+
 const filterCards = (cards, searchTerm) => {
   if (!searchTerm) return cards;
 
@@ -67,7 +67,7 @@ const TCG = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [loadedImages, setLoadedImages] = useState(new Set());
 
-  // ✅ Debounce para o search term
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -77,14 +77,14 @@ const TCG = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // ✅ Filtro OTIMIZADO - agora também filtra cartas sem imagem
+
   const filteredCards = useMemo(() => {
     const filtered = filterCards(allCards, debouncedSearchTerm);
-    // ✅ Filtra cartas que não têm imagem válida
+
     return filtered.filter(card => hasValidImage(card));
   }, [allCards, debouncedSearchTerm]);
 
-  // ✅ Atualiza cards visíveis
+
   useEffect(() => {
     const visibleCards = filteredCards.slice(0, page * PAGE_SIZE);
     setCards(visibleCards);
@@ -92,25 +92,25 @@ const TCG = () => {
     setTotalCards(filteredCards.length);
   }, [filteredCards, page]);
 
-  // ✅ Função para obter URL da imagem (SEMPRE low)
+
   const getImageUrl = useCallback((card) => {
     if (!hasValidImage(card)) return null;
     return card.images.low || card.images.small || card.images.high || card.images.large;
   }, []);
 
-  // ✅ Função para obter URL da imagem do modal (TAMBÉM low)
+
   const getModalImageUrl = useCallback((card) => {
     if (!hasValidImage(card)) return null;
     return card.images.low || card.images.small || card.images.high || card.images.large;
   }, []);
 
-  // ✅ Pré-carrega imagens das cartas visíveis (TODAS low)
+
   useEffect(() => {
     if (cards.length === 0) return;
 
     const imageUrls = cards
       .map(card => getImageUrl(card))
-      .filter(Boolean); // ✅ Filtra URLs nulas
+      .filter(Boolean);
 
     imageUrls.forEach(src => {
       if (src && !loadedImages.has(src)) {
@@ -119,7 +119,7 @@ const TCG = () => {
     });
   }, [cards, loadedImages, getImageUrl]);
 
-  // ✅ Buscar TODAS as cartas - AGORA FILTRA CARTAS SEM IMAGEM
+
   const fetchAllCards = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -134,7 +134,7 @@ const TCG = () => {
       if (responseData.data && responseData.data.length > 0) {
         console.log('✅ Cartas carregadas:', responseData.data.length);
 
-        // ✅ Filtra cartas que não têm imagem válida
+
         const cardsWithImages = responseData.data
           .filter(card => {
             const hasImage = card.images && (
@@ -152,10 +152,10 @@ const TCG = () => {
             id: card.id,
             name: card.name || 'Unknown Pokémon',
             images: {
-              small: card.images?.small,    // ✅ low quality (245x337)
-              large: card.images?.large,    // ✅ high quality (600x825)
-              high: card.images?.high,      // ✅ backup
-              low: card.images?.low         // ✅ low quality (mais rápido)
+              small: card.images?.small,
+              large: card.images?.large,
+              high: card.images?.high,
+              low: card.images?.low
             },
             rarity: card.rarity
           }));
@@ -164,12 +164,12 @@ const TCG = () => {
 
         setAllCards(cardsWithImages);
 
-        // ✅ Pré-carrega IMEDIATAMENTE as primeiras 100 imagens LOW (são leves)
+
         setTimeout(() => {
           const firstBatchImages = cardsWithImages
             .slice(0, 100)
             .map(card => getImageUrl(card))
-            .filter(Boolean); // ✅ Filtra URLs nulas
+            .filter(Boolean);
 
           firstBatchImages.forEach(src => {
             preloadImage(src).catch(() => {});
@@ -193,8 +193,6 @@ const TCG = () => {
       try {
         const cached = await localforage.getItem('pokemon-cards-cache');
         if (cached) {
-          console.log('📦 Usando cache silenciosamente');
-          // ✅ Filtra cartas sem imagem também no cache
           const cachedWithImages = cached.data.filter(card => hasValidImage(card));
           setAllCards(cachedWithImages);
           return;
@@ -216,7 +214,6 @@ const TCG = () => {
     }
   }, [getImageUrl]);
 
-  // ✅ Load more OTIMIZADO
   const loadMore = useCallback(() => {
     if (!hasMore || loading) return;
 
@@ -232,7 +229,7 @@ const TCG = () => {
     }, 50);
   }, [filteredCards, page, hasMore, loading]);
 
-  // ✅ Intersection Observer para scroll infinito
+
   useEffect(() => {
     if (!hasMore || loading) return;
 
@@ -253,7 +250,7 @@ const TCG = () => {
     };
   }, [loadMore, hasMore, loading]);
 
-  // ✅ Handler de imagem SUPER OTIMIZADO
+
   const handleImageLoad = useCallback((e, src) => {
     e.target.style.opacity = '1';
     e.target.style.transition = 'opacity 0.05s ease-in';
@@ -264,13 +261,13 @@ const TCG = () => {
   const handleImageError = useCallback((e, card) => {
     console.log(`❌ Erro na imagem da carta ${card.name}, removendo...`);
 
-    // ✅ Remove a carta imediatamente se a imagem falhar
+
     setCards(prev => prev.filter(c => c.id !== card.id));
     setAllCards(prev => prev.filter(c => c.id !== card.id));
     setTotalCards(prev => prev - 1);
   }, []);
 
-  // ✅ Modal functions
+
   const openCardModal = useCallback((card) => {
     if (!hasValidImage(card)) {
       console.log(`❌ Carta ${card.name} não tem imagem válida para modal`);
@@ -288,7 +285,7 @@ const TCG = () => {
     setSelectedCard(null);
   }, []);
 
-  // ✅ ESC key para fechar modal
+
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.keyCode === 27) closeCardModal();
@@ -297,13 +294,13 @@ const TCG = () => {
     return () => document.removeEventListener('keydown', handleEscKey);
   }, [closeCardModal]);
 
-  // ✅ Limpar busca
+
   const clearSearch = useCallback(() => {
     setSearchTerm('');
     setPage(1);
   }, []);
 
-  // ✅ Carregar dados iniciais
+
   useEffect(() => {
     let isMounted = true;
 
@@ -380,7 +377,7 @@ const TCG = () => {
         <div className="cards-grid">
           {cards.map(card => {
             const imageUrl = getImageUrl(card);
-            if (!imageUrl) return null; // ✅ Não renderiza se não tiver imagem
+            if (!imageUrl) return null;
 
             return (
               <div

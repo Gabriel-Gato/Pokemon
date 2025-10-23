@@ -151,7 +151,7 @@
   text-decoration: underline;
 }
 
-/* CONTAINER DO BOTÃO CENTRALIZADO */
+
 .button-container {
   width: 100%;
   display: flex;
@@ -209,9 +209,7 @@
   color: #a52046 !important;
 }
 
-/* ... (mantenha todo o CSS anterior) ... */
 
-/* ESTILOS DE ERRO */
 .error-message {
   color: #CF2B58;
   font-size: 14px;
@@ -237,7 +235,7 @@
   margin-left: 10px;
 }
 
-/* Destaque para campos com erro */
+
 .input-group:has(.error) .input-label {
   color: #CF2B58;
 }

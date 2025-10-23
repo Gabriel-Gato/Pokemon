@@ -37,7 +37,7 @@ const Cadastro = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
 
-    // Limpa o erro quando o usuário começa a digitar/marcar
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -57,7 +57,7 @@ const Cadastro = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validação dos campos obrigatórios
+
     if (!formData.email) newErrors.email = 'Email é obrigatório';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email inválido';
 
@@ -69,7 +69,7 @@ const Cadastro = () => {
     if (!formData.confirmarSenha) newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
     else if (formData.senha !== formData.confirmarSenha) newErrors.confirmarSenha = 'Senhas não coincidem';
 
-    // Validação das checkboxes obrigatórias
+
     if (!formData.politicaPrivacidade) newErrors.politicaPrivacidade = 'Você deve aceitar as Políticas de Privacidade';
     if (!formData.termosUsuario) newErrors.termosUsuario = 'Você deve aceitar os Termos de Usuário';
 
@@ -78,8 +78,7 @@ const Cadastro = () => {
 
   const handleCadastro = (e) => {
     e.preventDefault();
-    
-    // Marca todos os campos como touched para mostrar erros
+
     const allTouched = {
       email: true,
       senha: true,
@@ -93,14 +92,14 @@ const Cadastro = () => {
     const newErrors = validateForm();
     
     if (Object.keys(newErrors).length === 0) {
-      // Formulário válido - pode prosseguir com o cadastro
+
       console.log('Dados do cadastro:', formData);
       navigate('/login');
     } else {
-      // Formulário inválido - mostra erros
+
       setErrors(newErrors);
       
-      // Scroll para o primeiro erro
+
       const firstError = Object.keys(newErrors)[0];
       const errorElement = document.querySelector(`[name="${firstError}"]`);
       if (errorElement) {

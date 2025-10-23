@@ -8,7 +8,6 @@ const WelcomeSection = () => {
 
   return (
     <section className="section welcome-section">
-      {/* Conteúdo principal que já temos */}
       <div className="welcome-content">
         <div className="text-content">
           <p className="welcome-text">
@@ -37,7 +36,7 @@ const WelcomeSection = () => {
       {/* LINHA DIVISÓRIA */}
       <div className="line-divider"></div>
 
-      {/* SEÇÃO TCG DENTRO DA WELCOME */}
+      {/* SEÇÃO TCG */}
       <div className="tcg-subsection">
         <div className="tcg-text">
           <h2 className="tcg-title">Gosta de TCG?</h2>
@@ -70,7 +69,7 @@ const WelcomeSection = () => {
 
       <div className="line-divider"></div>
 
-      {/* PARTE 3: SEÇÃO COMPETITIVO */}
+      {/* SEÇÃO COMPETITIVO */}
       <div className="competitive-subsection">
         <div className="competitive-image">
           <img

@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-/* Header Simples */
+
 .tcg-header {
   display: flex;
   justify-content: space-between;
@@ -59,7 +59,7 @@
   border: 1px solid #e2e8f0;
 }
 
-/* Mensagens de Erro Simples */
+
 .error-message {
   background: #fed7d7;
   color: #c53030;
@@ -74,7 +74,7 @@
   font-weight: 600;
 }
 
-/* Busca Limpa */
+
 .tcg-search {
   display: flex;
   justify-content: center;
@@ -127,7 +127,7 @@
   color: #4a5568;
 }
 
-/* Loading Simples */
+
 .loading-message {
   text-align: center;
   padding: 60px 20px;
@@ -149,7 +149,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Grid de Cartas Limpo */
+
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -162,7 +162,7 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   overflow: hidden;
-  cursor: pointer; /* ✅ Indica que é clicável */
+  cursor: pointer;
 }
 
 .card-item:hover {
@@ -204,7 +204,7 @@
   border-color: #ffd8a8;
 }
 
-/* Mensagem Sem Cartas */
+
 .no-cards-message {
   text-align: center;
   padding: 60px 20px;
@@ -223,7 +223,7 @@
   font-size: 1rem;
 }
 
-/* Loading More */
+
 .loading-more {
   text-align: center;
   padding: 30px 20px;
@@ -236,7 +236,7 @@
   margin-bottom: 15px;
 }
 
-/* ✅ Modal Styles - TAMANHO DA CARTA */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -256,7 +256,7 @@
   background: #ffffff;
   border-radius: 20px;
   padding: 30px;
-  max-width: 400px; /* ✅ Tamanho similar às cartas do grid */
+  max-width: 400px;
   width: auto;
   max-height: 90vh;
   position: relative;
@@ -345,13 +345,13 @@
   border-color: #ffd8a8;
 }
 
-/* Scroll Sentinel */
+
 #scroll-sentinel {
   height: 1px;
   margin: 10px 0;
 }
 
-/* Responsividade */
+
 @media (max-width: 1024px) {
   .cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -386,7 +386,7 @@
 
   .modal-content {
     padding: 20px;
-    max-width: 85vw; /* ✅ Um pouco menor no mobile */
+    max-width: 85vw;
   }
 
   .modal-card-info h3 {
@@ -421,7 +421,7 @@
   }
 }
 
-/* Foco para acessibilidade */
+
 .search-input:focus,
 .clear-search-btn:focus,
 .modal-close:focus,
@@ -430,7 +430,7 @@
   outline-offset: 2px;
 }
 
-/* ✅ Estilos para botão de tentar novamente */
+
 .retry-btn {
   background: #667eea;
   color: white;
@@ -474,14 +474,14 @@
   font-style: italic;
 }
 
-/* ✅ Desabilita busca quando tem erro */
+
 .search-input:disabled {
   background-color: #f7fafc;
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* ✅ Mensagem de aviso (não bloqueante) */
+
 .warning-message {
   background: #fff3cd;
   color: #856404;
@@ -511,7 +511,7 @@
   background: #6c5203;
 }
 
-/* ✅ Indicador de carregamento de imagem */
+
 .image-loading {
   position: absolute;
   top: 50%;
@@ -524,7 +524,7 @@
 
 .card-image-container {
   position: relative;
-  min-height: 200px; /* ✅ Altura mínima para evitar layout shift */
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -539,13 +539,13 @@
   opacity: 1;
 }
 
-/* ✅ Animações para feedback visual */
+
 @keyframes pulse {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 0.3; }
 }
 
-/* ✅ Otimizações de performance */
+
 .cards-grid {
   will-change: transform;
 }
@@ -554,7 +554,7 @@
   will-change: transform;
 }
 
-/* ✅ Botão de toggle de qualidade */
+
 .quality-toggle {
   background: #667eea;
   color: white;

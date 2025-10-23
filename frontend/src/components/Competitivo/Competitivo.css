@@ -45,7 +45,7 @@
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Navegação */
+
 .competitive-nav {
   display: flex;
   justify-content: center;
@@ -100,7 +100,7 @@
   transform: translateY(-2px);
 }
 
-/* Filtros - CORRIGIDO PARA TEXTO PRETO COM FUNDO BRANCO */
+
 .competitive-filters {
   display: flex;
   gap: 20px;
@@ -130,7 +130,7 @@
   letter-spacing: 1px;
 }
 
-/* CORREÇÃO ESPECÍFICA - TEXTO PRETO COM FUNDO BRANCO */
+
 .competitive-container .search-input,
 .competitive-container .filter-group select {
   padding: 14px 18px;
@@ -164,7 +164,7 @@
   padding: 10px;
 }
 
-/* Info de resultados */
+
 .results-info {
   text-align: center;
   margin: 20px 0;
@@ -178,7 +178,7 @@
   border: 1px solid #3a3a7a;
 }
 
-/* Pokemon Grid */
+
 .pokemon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -248,7 +248,7 @@
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
-/* Sprites com fallback */
+
 .pokemon-sprite {
   width: 120px;
   height: 120px;
@@ -310,7 +310,7 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Cores dos tipos atualizadas */
+
 .type-normal { background: linear-gradient(135deg, #A8A878, #8a8a62); color: white; border-color: #8a8a62; }
 .type-fire { background: linear-gradient(135deg, #F08030, #d4691a); color: white; border-color: #d4691a; }
 .type-water { background: linear-gradient(135deg, #6890F0, #4a75d4); color: white; border-color: #4a75d4; }
@@ -374,7 +374,7 @@
   box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
 }
 
-/* Team Builder */
+
 .team-builder-view {
   background: linear-gradient(135deg, rgba(42, 42, 90, 0.9), rgba(26, 26, 58, 0.9));
   border-radius: 25px;
@@ -564,7 +564,7 @@
   transform: scale(1.2);
 }
 
-/* Team Analysis */
+
 .team-analysis {
   background: linear-gradient(135deg, rgba(58, 58, 122, 0.9), rgba(42, 42, 90, 0.9));
   border-radius: 20px;
@@ -642,7 +642,7 @@
   left: -20px;
 }
 
-/* Loading */
+
 .competitive-loading {
   text-align: center;
   padding: 100px 20px;
@@ -679,7 +679,7 @@
   font-weight: 600;
 }
 
-/* Modal */
+
 .competitive-modal {
   max-width: 800px;
   max-height: 90vh;
@@ -741,7 +741,7 @@
   font-size: 1rem;
 }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
   .competitive-container {
     padding: 20px 15px;
@@ -813,14 +813,14 @@
   background: none !important;
 }
 
-/* Garantir que o título do modal também fique branco */
+
 .competitive-container .modal-title h2 {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background: none !important;
 }
 
-/* Estatísticas Melhoradas */
+
 .stats-grid-improved {
   display: flex;
   flex-direction: column;
@@ -871,7 +871,7 @@
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }
 
-/* Movesets Melhorados */
+
 .movesets-container {
   display: flex;
   flex-direction: column;
@@ -980,7 +980,7 @@
   font-weight: 500;
 }
 
-/* Counters e Checks Melhorados */
+
 .counters-section-improved {
   margin-top: 25px;
 }
@@ -1048,7 +1048,7 @@
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
   .counters-checks-container {
     grid-template-columns: 1fr;
@@ -1064,7 +1064,7 @@
   }
 }
 
-/* Notificações */
+
 .team-notification {
   position: fixed;
   top: 20px;
@@ -1134,7 +1134,7 @@
   transform: scale(1.1);
 }
 
-/* Animações */
+
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
@@ -1157,7 +1157,7 @@
   }
 }
 
-/* Notificação de erro */
+
 .team-notification.error .notification-content {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   border-color: #e74c3c;
@@ -1168,7 +1168,6 @@
   border-color: #f39c12;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
   .team-notification {
     top: 10px;
@@ -1182,7 +1181,7 @@
   }
 }
 
-/* Fundo escuro APENAS quando a classe competitive-body está no body */
+
 body.competitive-body {
   background: linear-gradient(135deg, #0c0c1a 0%, #1a1a3a 100%) !important;
   margin: 0;

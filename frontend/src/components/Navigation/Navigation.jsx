@@ -4,7 +4,7 @@ import './Navigation.css';
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Hook para pegar a rota atual
+  const location = useLocation();
 
   const menuItems = [
     { label: 'Home', width: 122, path: '/' },
@@ -21,7 +21,7 @@ const Navigation = () => {
     navigate(path);
   };
 
-  // Função para verificar se o item está ativo
+
   const isActive = (path) => {
     return location.pathname === path;
   };
