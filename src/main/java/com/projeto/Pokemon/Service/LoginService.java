@@ -3,6 +3,7 @@ package com.projeto.Pokemon.Service;
 import com.projeto.Pokemon.Model.Login;
 import com.projeto.Pokemon.Repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,25 +70,28 @@ public class LoginService {
     }
 
     public Login atualizar(Long id, Login loginAtualizado) {
-        Optional<Login> existente = loginRepository.findById(id);
-        if (existente.isPresent()) {
-            Login login = existente.get();
+        Login login = loginRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        if (loginAtualizado.getNome() != null)
+            login.setNome(loginAtualizado.getNome());
 
-            if (loginAtualizado.getNome() != null)
-                login.setNome(loginAtualizado.getNome());
-            if (loginAtualizado.getEmail() != null)
-                login.setEmail(loginAtualizado.getEmail());
-            if (loginAtualizado.getSenha() != null)
-                login.setSenha(loginAtualizado.getSenha());
-            if (loginAtualizado.getImagem() != null)
-                login.setImagem(loginAtualizado.getImagem());
-
-            return loginRepository.save(login);
+        if (loginAtualizado.getEmail() != null && !loginAtualizado.getEmail().equals(login.getEmail())) {
+            if (loginRepository.existsByEmail(loginAtualizado.getEmail())) {
+                throw new IllegalArgumentException("Email já cadastrado");
+            }
+            login.setEmail(loginAtualizado.getEmail());
         }
 
-        return null;
+        if (loginAtualizado.getSenha() != null)
+            login.setSenha(passwordEncoder.encode(loginAtualizado.getSenha()));
+
+        if (loginAtualizado.getImagem() != null)
+            login.setImagem(loginAtualizado.getImagem());
+
+        return loginRepository.save(login);
     }
+
 
 
     public void deletar(Login login){
