@@ -81,6 +81,8 @@ npm start
 ## 👨‍💻 Desenvolvedor
 
 **Gabriel Gato**
+
+
 🌐 GitHub: [@Gabriel-Gato](https://github.com/Gabriel-Gato)
 
 ```
