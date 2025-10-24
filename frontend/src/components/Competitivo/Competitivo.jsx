@@ -11,18 +11,15 @@ const Competitive = () => {
   const [view, setView] = useState('tier-list');
   const [searchTerm, setSearchTerm] = useState('');
   const [notification, setNotification] = useState({ show: false, message: '', pokemonName: '', type: 'success' });
-
+  // Novo estado para controlar o tamanho do modal
+  const [modalSize, setModalSize] = useState('normal');
 
   useEffect(() => {
-
     document.body.classList.add('competitive-body');
-    
-
     return () => {
       document.body.classList.remove('competitive-body');
     };
   }, []);
-
 
   const tiers = [
     { id: 'all', name: 'Todos Pokémon', description: 'Todos os 1000+ Pokémon' },
@@ -35,37 +32,27 @@ const Competitive = () => {
     { id: 'lc', name: 'Little Cup', description: 'Pokémon básicos' }
   ];
 
-
   const fetchAllPokemon = async () => {
     try {
       setLoading(true);
-      
 
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=200');
       const data = await response.json();
-      
 
       const pokemonDetails = await Promise.all(
         data.results.map(async (pokemon) => {
           try {
             const res = await fetch(pokemon.url);
             const details = await res.json();
-            
 
-            const sprite = 
+            const sprite =
               details.sprites.other?.['official-artwork']?.front_default ||
+              details.sprites.other?.home?.front_default ||
               details.sprites.front_default ||
-              details.sprites.front_shiny ||
-              details.sprites.back_default;
-            
-
-            if (!sprite) {
-              return null;
-            }
-            
+              'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjM0EzQTNBIi8+Cjx0ZXh0IHg9IjYwIiB5PSI2NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN0E3QTdBIj7imYA8L3RleHQ+Cjwvc3ZnPgo=';
 
             const competitiveData = generateCompetitiveData(details);
-            
+
             return {
               id: details.id,
               name: details.name,
@@ -83,24 +70,18 @@ const Competitive = () => {
           }
         })
       );
-      
 
       const validPokemon = pokemonDetails.filter(pokemon => pokemon !== null);
-      
-
       const sortedByUsage = validPokemon.sort((a, b) => b.usage - a.usage);
-      
+
       setPokemons(sortedByUsage);
       setLoading(false);
-      
-      console.log(`🎯 Carregados ${sortedByUsage.length} Pokémon ordenados por uso!`);
-      
+
     } catch (error) {
       console.error('Erro ao buscar Pokémon:', error);
       setLoading(false);
     }
   };
-
 
   const generateCompetitiveData = (pokemon) => {
     const stats = pokemon.stats.reduce((acc, stat) => {
@@ -109,31 +90,29 @@ const Competitive = () => {
     }, {});
 
     const totalBST = Object.values(stats).reduce((a, b) => a + b, 0);
-    
 
     let tier = 'nu';
     let usage = 0;
-    
+
     if (totalBST >= 670) {
       tier = 'uber';
-      usage = Math.random() * 15 + 20; // 20-35%
+      usage = Math.random() * 15 + 20;
     } else if (totalBST >= 580) {
       tier = 'ou';
-      usage = Math.random() * 12 + 12; // 12-24%
+      usage = Math.random() * 12 + 12;
     } else if (totalBST >= 520) {
       tier = 'uu';
-      usage = Math.random() * 10 + 8; // 8-18%
+      usage = Math.random() * 10 + 8;
     } else if (totalBST >= 480) {
       tier = 'ru';
-      usage = Math.random() * 8 + 4; // 4-12%
+      usage = Math.random() * 8 + 4;
     } else if (totalBST >= 430) {
       tier = 'nu';
-      usage = Math.random() * 6 + 2; // 2-8%
+      usage = Math.random() * 6 + 2;
     } else {
       tier = 'pu';
-      usage = Math.random() * 4 + 1; // 1-5%
+      usage = Math.random() * 4 + 1;
     }
-
 
     if (['mewtwo', 'kyogre', 'groudon', 'rayquaza', 'arceus'].includes(pokemon.name)) {
       tier = 'uber';
@@ -142,7 +121,6 @@ const Competitive = () => {
       tier = 'ou';
       usage = 15 + Math.random() * 8;
     }
-
 
     const movesets = generateMovesets(pokemon);
     const { counters, checks } = generateCounters(pokemon);
@@ -155,7 +133,6 @@ const Competitive = () => {
       checks
     };
   };
-
 
   const generateMovesets = (pokemon) => {
     const types = pokemon.types.map(t => t.type.name);
@@ -191,7 +168,6 @@ const Competitive = () => {
     const utilityMoves = ['Protect', 'Substitute', 'Toxic', 'Will-O-Wisp', 'Thunder Wave', 'Stealth Rock', 'Defog', 'Roost', 'Recover'];
 
     const movesets = [];
-    
 
     const offensiveMoves = types.flatMap(type => typeMoves[type] || []).slice(0, 3);
     if (offensiveMoves.length >= 2) {
@@ -204,7 +180,6 @@ const Competitive = () => {
         evs: { hp: 0, atk: isPhysical ? 252 : 0, def: 0, spa: isPhysical ? 0 : 252, spd: 4, spe: 252 }
       });
     }
-
 
     if (isDefensive) {
       movesets.push({
@@ -231,14 +206,9 @@ const Competitive = () => {
     return pokemon.abilities.find(a => !a.is_hidden)?.ability?.name || 'Overgrow';
   };
 
-
   const generateCounters = (pokemon) => {
     const types = pokemon.types.map(t => t.type.name);
-    
-
     const superEffectiveTypes = getSuperEffectiveTypes(types);
-    
-
     const commonCounters = getCommonPokemonByTypes(superEffectiveTypes).slice(0, 3);
     const commonChecks = getCommonPokemonByTypes(superEffectiveTypes).slice(3, 6);
 
@@ -298,7 +268,6 @@ const Competitive = () => {
     return [...new Set(types.flatMap(type => commonPokemon[type] || []))];
   };
 
-
   const filteredPokemons = pokemons.filter(pokemon => {
     const matchesTier = selectedTier === 'all' || pokemon.tier === selectedTier;
     const matchesSearch = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -310,12 +279,12 @@ const Competitive = () => {
       showNotification(`Time cheio! Máximo 6 Pokémon.`, pokemon.name, 'error');
       return;
     }
-    
+
     if (team.find(p => p.id === pokemon.id)) {
       showNotification(`${pokemon.name} já está no time!`, pokemon.name, 'warning');
       return;
     }
-    
+
     setTeam([...team, { ...pokemon, teamRole: getSuggestedRole(pokemon) }]);
     showNotification(`${pokemon.name} adicionado ao time!`, pokemon.name, 'success');
   };
@@ -327,7 +296,7 @@ const Competitive = () => {
       pokemonName: pokemonName,
       type: type
     });
-    
+
     setTimeout(() => {
       setNotification({ show: false, message: '', pokemonName: '', type: 'success' });
     }, 3000);
@@ -341,7 +310,7 @@ const Competitive = () => {
     const stats = pokemon.stats;
     const totalDefensive = stats.hp + stats.defense + stats['special-defense'];
     const totalOffensive = Math.max(stats.attack, stats['special-attack']);
-    
+
     if (totalDefensive > 300) return 'Defensive Wall';
     if (totalOffensive > 120) return 'Sweeper';
     if (stats.speed > 100) return 'Revenge Killer';
@@ -364,17 +333,16 @@ const Competitive = () => {
 
   const generateTeamSuggestions = (team) => {
     const suggestions = [];
-    
+
     if (team.length < 6) {
       suggestions.push(`Time incompleto (${team.length}/6). Adicione mais Pokémon.`);
     }
-    
+
     const types = team.flatMap(p => p.types);
     const typeCount = types.reduce((acc, type) => {
       acc[type] = (acc[type] || 0) + 1;
       return acc;
     }, {});
-
 
     const missingTypes = ['water', 'fire', 'grass', 'electric'].filter(type => !typeCount[type]);
     if (missingTypes.length > 0) {
@@ -387,6 +355,17 @@ const Competitive = () => {
   const clearTeam = () => {
     setTeam([]);
     setTeamAnalysis(null);
+  };
+
+  // Função para alternar o tamanho do modal
+  const toggleModalSize = () => {
+    setModalSize(prevSize => prevSize === 'normal' ? 'expanded' : 'normal');
+  };
+
+  // Função para fechar o modal e resetar o tamanho
+  const handleCloseModal = () => {
+    setSelectedPokemon(null);
+    setModalSize('normal'); // Resetar para o tamanho normal ao fechar
   };
 
   useEffect(() => {
@@ -425,7 +404,7 @@ const Competitive = () => {
               <strong>{notification.pokemonName}</strong>
               <span>{notification.message}</span>
             </div>
-            <button 
+            <button
               className="notification-close"
               onClick={() => setNotification({ show: false, message: '', pokemonName: '', type: 'success' })}
             >
@@ -479,8 +458,8 @@ const Competitive = () => {
 
           <div className="pokemon-grid">
             {filteredPokemons.map(pokemon => (
-              <div 
-                key={pokemon.id} 
+              <div
+                key={pokemon.id}
                 className="pokemon-card competitive-card"
                 onClick={() => handlePokemonSelect(pokemon)}
               >
@@ -488,9 +467,9 @@ const Competitive = () => {
                   <h3 className="pokemon-name">#{pokemon.id} {pokemon.name}</h3>
                   <span className="usage-rate">{pokemon.usage}%</span>
                 </div>
-                
+
                 <img src={pokemon.sprite} alt={pokemon.name} className="pokemon-sprite" />
-                
+
                 <div className="pokemon-types">
                   {pokemon.types.map(type => (
                     <span key={type} className={`type-badge type-${type.toLowerCase()}`}>
@@ -498,12 +477,12 @@ const Competitive = () => {
                     </span>
                   ))}
                 </div>
-                
+
                 <div className="competitive-info">
                   <div className={`tier-badge tier-${pokemon.tier}`}>
                     {pokemon.tier.toUpperCase()}
                   </div>
-                  <button 
+                  <button
                     className="add-to-team-btn"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -593,14 +572,29 @@ const Competitive = () => {
         </div>
       )}
 
-      {/* Modal de Detalhes */}
+      {/* Modal de Detalhes - COM CONTROLE DE TAMANHO */}
       {selectedPokemon && (
-        <div className="modal-overlay" onClick={() => setSelectedPokemon(null)}>
-          <div className="modal-content competitive-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedPokemon(null)}>×</button>
-            
+        <div className="modal-overlay competitive-modal-overlay" onClick={handleCloseModal}>
+          <div
+            className={`modal-content competitive-modal-dark ${modalSize}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header-controls">
+              <button className="modal-expand-btn" onClick={toggleModalSize}>
+                {modalSize === 'normal' ? '⛶' : '⛷'}
+              </button>
+              <button className="modal-close competitive-modal-close" onClick={handleCloseModal}>×</button>
+            </div>
+
             <div className="competitive-modal-header">
-              <img src={selectedPokemon.sprite} alt={selectedPokemon.name} className="modal-sprite" />
+              <img
+                src={selectedPokemon.sprite}
+                alt={selectedPokemon.name}
+                className="modal-sprite"
+                onError={(e) => {
+                  e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjM0EzQTNBIi8+Cjx0ZXh0IHg9IjYwIiB5PSI2NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN0E3QTdBIj7imYA8L3RleHQ+Cjwvc3ZnPgo=';
+                }}
+              />
               <div className="modal-title">
                 <h2>#{selectedPokemon.id} {selectedPokemon.name}</h2>
                 <div className="modal-types">
@@ -615,7 +609,7 @@ const Competitive = () => {
             </div>
 
             <div className="competitive-modal-body">
-              {/* Estatísticas - Melhor Visualização */}
+              {/* Estatísticas */}
               <div className="stats-section">
                 <h3>📊 Estatísticas Base</h3>
                 <div className="stats-grid-improved">
@@ -628,12 +622,12 @@ const Competitive = () => {
                       'special-defense': 'Defesa Esp.',
                       'speed': 'Velocidade'
                     };
-                    
+
                     const percentage = (value / 255) * 100;
-                    let barColor = '#4CAF50'; // Verde para altos valores
-                    if (value < 50) barColor = '#f44336'; // Vermelho para baixos valores
-                    else if (value < 80) barColor = '#FF9800'; // Laranja para médios valores
-                    
+                    let barColor = '#4CAF50';
+                    if (value < 50) barColor = '#f44336';
+                    else if (value < 80) barColor = '#FF9800';
+
                     return (
                       <div key={stat} className="stat-item-improved">
                         <div className="stat-header">
@@ -641,9 +635,9 @@ const Competitive = () => {
                           <span className="stat-value-improved">{value}</span>
                         </div>
                         <div className="stat-bar-improved">
-                          <div 
+                          <div
                             className="stat-bar-fill-improved"
-                            style={{ 
+                            style={{
                               width: `${percentage}%`,
                               backgroundColor: barColor
                             }}
@@ -655,7 +649,7 @@ const Competitive = () => {
                 </div>
               </div>
 
-              {/* Movesets - Com Espaço */}
+              {/* Movesets */}
               <div className="movesets-section">
                 <h3>⚔️ Sets Competitivos</h3>
                 <div className="movesets-container">
@@ -673,7 +667,7 @@ const Competitive = () => {
                             ))}
                           </div>
                         </div>
-                        
+
                         <div className="moveset-details-improved">
                           <div className="detail-item">
                             <span className="detail-label">Item:</span>
@@ -703,7 +697,7 @@ const Competitive = () => {
                 </div>
               </div>
 
-              {/* Counters e Checks - Com Espaço */}
+              {/* Counters e Checks */}
               <div className="counters-section-improved">
                 <div className="counters-checks-container">
                   <div className="counters-container">

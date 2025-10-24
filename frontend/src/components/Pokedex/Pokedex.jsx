@@ -15,15 +15,16 @@ const Pokedex = () => {
     fetchPokemons();
   }, []);
 
-  // Função para verificar se uma imagem é válida
+
   const isValidImage = (url) => {
     return url && url !== 'null' && url !== 'undefined' && !url.includes('null');
   };
 
-  // Função para verificar se o Pokémon tem pelo menos uma imagem
+
   const hasValidImage = (pokemon) => {
     return (
       isValidImage(pokemon.sprites.other?.['official-artwork']?.front_default) ||
+      isValidImage(pokemon.sprites.other?.home?.front_default) ||
       isValidImage(pokemon.sprites.front_default)
     );
   };
@@ -33,17 +34,17 @@ const Pokedex = () => {
       setLoading(true);
       const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
       const data = await response.json();
-      
+
       const pokemonDetails = await Promise.all(
         data.results.map(async (pokemon) => {
           const res = await fetch(pokemon.url);
           return res.json();
         })
       );
-      
-      // Filtrar apenas Pokémon com imagens válidas
+
+
       const validPokemons = pokemonDetails.filter(hasValidImage);
-      
+
       setPokemons(pokemonDetails);
       setPokemonsWithImages(validPokemons);
       setLoading(false);
@@ -58,24 +59,24 @@ const Pokedex = () => {
       setModalLoading(true);
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
       const data = await response.json();
-      
+
       const speciesResponse = await fetch(data.species.url);
       const speciesData = await speciesResponse.json();
-      
-      const portugueseEntry = speciesData.flavor_text_entries.find(entry => 
+
+      const portugueseEntry = speciesData.flavor_text_entries.find(entry =>
         entry.language.name === 'pt'
       );
-      const englishEntry = speciesData.flavor_text_entries.find(entry => 
+      const englishEntry = speciesData.flavor_text_entries.find(entry =>
         entry.language.name === 'en'
       );
-      
+
       const pokemonWithDetails = {
         ...data,
         description: portugueseEntry?.flavor_text || englishEntry?.flavor_text || 'Descrição não disponível',
         habitat: speciesData.habitat?.name || 'Desconhecido',
         generation: speciesData.generation.name.replace('generation-', '').toUpperCase()
       };
-      
+
       setSelectedPokemon(pokemonWithDetails);
       setModalLoading(false);
     } catch (error) {
@@ -101,23 +102,40 @@ const Pokedex = () => {
 
   const getMainImage = () => {
     if (!selectedPokemon) return '';
-    
+
     const sprites = selectedPokemon.sprites;
-    
+    let imageUrl = '';
+
     switch(selectedImage) {
       case 'front':
-        return sprites.front_default;
+        imageUrl = sprites.front_default;
+        break;
       case 'back':
-        return sprites.back_default;
+        imageUrl = sprites.back_default;
+        break;
       case 'dream':
-        return sprites.other?.dream_world?.front_default;
+        imageUrl = sprites.other?.dream_world?.front_default;
+        break;
       case 'shiny':
-        return sprites.front_shiny;
+        imageUrl = sprites.front_shiny;
+        break;
       case 'shiny-back':
-        return sprites.back_shiny;
+        imageUrl = sprites.back_shiny;
+        break;
       default:
-        return sprites.other?.['official-artwork']?.front_default || sprites.front_default;
+        imageUrl = sprites.other?.['official-artwork']?.front_default ||
+                   sprites.other?.home?.front_default;
+        break;
     }
+
+
+    if (!imageUrl) {
+      imageUrl = sprites.front_default ||
+                 sprites.other?.home?.front_default ||
+                 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgODBMMTUwIDgwTDE3MSAxMDFIMTUwVjE1MEgxMDBWMTIwSDgwTDEyMCA4MFoiIGZpbGw9IiNDRENEQ0QiLz4KPHBhdGggZD0iTTE1MCAyMjBMMTUwIDIyMEwxMjkgMTk5SDE1MFYxNTBIMjAwVjE4MEgyMjBMMTgwIDIyMFoiIGZpbGw9IiNDRENEQ0QiLz4KPHRleHQgeD0iMTUwIiB5PSIyNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiI+SW1hZ2VtIG7Do28gZGlzcG9uw612ZWw8L3RleHQ+Cjwvc3ZnPgo=';
+    }
+
+    return imageUrl;
   };
 
   const formatNumber = (num) => {
@@ -172,7 +190,7 @@ const Pokedex = () => {
             className={`search-input ${filteredPokemons.length === 0 && searchTerm ? 'no-results' : ''}`}
           />
         </div>
-        
+
         <div className="filter-group">
           <label>Filtrar por Tipo</label>
           <div className="type-filter-buttons">
@@ -182,7 +200,7 @@ const Pokedex = () => {
             >
               Todos
             </button>
-            
+
             <div className="type-row">
               {[
                 { type: 'grass', name: 'Grama' },
@@ -200,7 +218,7 @@ const Pokedex = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="type-row">
               {[
                 { type: 'ice', name: 'Gelo' },
@@ -218,7 +236,7 @@ const Pokedex = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="type-row">
               {[
                 { type: 'fighting', name: 'Lutador' },
@@ -235,7 +253,7 @@ const Pokedex = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="type-row">
               {[
                 { type: 'bug', name: 'Inseto' },
@@ -265,20 +283,21 @@ const Pokedex = () => {
       <div className="pokemon-grid">
         {filteredPokemons.length > 0 ? (
           filteredPokemons.map(pokemon => (
-            <div 
-              key={pokemon.id} 
+            <div
+              key={pokemon.id}
               className="pokemon-card"
               onClick={() => handlePokemonClick(pokemon)}
             >
               <div className="pokemon-number">
                 {formatNumber(pokemon.id)}
               </div>
-              <img 
-                src={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} 
+              <img
+                src={pokemon.sprites.other?.['official-artwork']?.front_default ||
+                     pokemon.sprites.other?.home?.front_default ||
+                     pokemon.sprites.front_default}
                 alt={pokemon.name}
                 className="pokemon-image"
                 onError={(e) => {
-                  // Fallback para sprite padrão se a arte oficial falhar
                   if (e.target.src !== pokemon.sprites.front_default) {
                     e.target.src = pokemon.sprites.front_default || '';
                   }
@@ -287,7 +306,7 @@ const Pokedex = () => {
               <h3 className="pokemon-name">{pokemon.name}</h3>
               <div className="pokemon-types">
                 {pokemon.types.map(typeInfo => (
-                  <span 
+                  <span
                     key={typeInfo.type.name}
                     className={`type-badge type-${typeInfo.type.name}`}
                   >
@@ -305,7 +324,7 @@ const Pokedex = () => {
         )}
       </div>
 
-      {/* Modal de Detalhes */}
+      {/* Modal de Detalhes - CORRIGIDO */}
       {selectedPokemon && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -317,7 +336,7 @@ const Pokedex = () => {
             ) : (
               <>
                 <button className="modal-close" onClick={closeModal}>×</button>
-                
+
                 <div className="modal-header">
                   <div className="modal-number">{formatNumber(selectedPokemon.id)}</div>
                   <h2 className="modal-name">{selectedPokemon.name}</h2>
@@ -326,97 +345,96 @@ const Pokedex = () => {
                 <div className="modal-body">
                   <div className="modal-images">
                     <div className="main-image-container">
-                      <img 
-                        src={getMainImage()} 
+                      <img
+                        src={getMainImage()}
                         alt={selectedPokemon.name}
                         className="modal-main-image"
-                        onError={(e) => {
-                          e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgODBMMTUwIDgwTDE3MSAxMDFIMTUwVjE1MEgxMDBWMTIwSDgwTDEyMCA4MFoiIGZpbGw9IiNDRENEQ0QiLz4KPHBhdGggZD0iTTE1MCAyMjBMMTUwIDIyMEwxMjkgMTk5SDE1MFYxNTBIMjAwVjE4MEgyMjBMMTgwIDIyMFoiIGZpbGw9IiNDRENEQ0QiLz4KPHRleHQgeD0iMTUwIiB5PSIxOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiI+SW1hZ2VuIG7Do28gZGlzcG9uw612ZWw8L3RleHQ+Cjwvc3ZnPgo=';
-                        }}
                       />
                     </div>
-                    
+
                     <div className="image-selector">
-                      {isValidImage(selectedPokemon.sprites.other?.['official-artwork']?.front_default) && (
-                        <button 
+                      {/* Arte Oficial */}
+                      {(selectedPokemon.sprites.other?.['official-artwork']?.front_default ||
+                        selectedPokemon.sprites.other?.home?.front_default) && (
+                        <button
                           className={`image-option ${selectedImage === 'official' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('official')}
                           title="Arte Oficial"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.other?.['official-artwork']?.front_default} 
+                          <img
+                            src={selectedPokemon.sprites.other?.['official-artwork']?.front_default ||
+                                 selectedPokemon.sprites.other?.home?.front_default}
                             alt="Oficial"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
-                      
-                      {isValidImage(selectedPokemon.sprites.front_default) && (
-                        <button 
+
+                      {/* Sprite Frontal */}
+                      {selectedPokemon.sprites.front_default && (
+                        <button
                           className={`image-option ${selectedImage === 'front' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('front')}
                           title="Frente"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.front_default} 
+                          <img
+                            src={selectedPokemon.sprites.front_default}
                             alt="Frente"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
-                      
-                      {isValidImage(selectedPokemon.sprites.back_default) && (
-                        <button 
+
+                      {/* Sprite Traseiro */}
+                      {selectedPokemon.sprites.back_default && (
+                        <button
                           className={`image-option ${selectedImage === 'back' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('back')}
                           title="Costas"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.back_default} 
+                          <img
+                            src={selectedPokemon.sprites.back_default}
                             alt="Costas"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
-                      
-                      {isValidImage(selectedPokemon.sprites.other?.dream_world?.front_default) && (
-                        <button 
+
+                      {/* Dream World */}
+                      {selectedPokemon.sprites.other?.dream_world?.front_default && (
+                        <button
                           className={`image-option ${selectedImage === 'dream' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('dream')}
                           title="Dream World"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.other?.dream_world?.front_default} 
+                          <img
+                            src={selectedPokemon.sprites.other?.dream_world?.front_default}
                             alt="Dream World"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
-                      
-                      {isValidImage(selectedPokemon.sprites.front_shiny) && (
-                        <button 
+
+                      {/* Shiny Frontal */}
+                      {selectedPokemon.sprites.front_shiny && (
+                        <button
                           className={`image-option ${selectedImage === 'shiny' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('shiny')}
                           title="Shiny Frente"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.front_shiny} 
+                          <img
+                            src={selectedPokemon.sprites.front_shiny}
                             alt="Shiny"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
-                      
-                      {isValidImage(selectedPokemon.sprites.back_shiny) && (
-                        <button 
+
+                      {/* Shiny Traseiro */}
+                      {selectedPokemon.sprites.back_shiny && (
+                        <button
                           className={`image-option ${selectedImage === 'shiny-back' ? 'active' : ''}`}
                           onClick={() => handleImageSelect('shiny-back')}
                           title="Shiny Costas"
                         >
-                          <img 
-                            src={selectedPokemon.sprites.back_shiny} 
+                          <img
+                            src={selectedPokemon.sprites.back_shiny}
                             alt="Shiny Costas"
-                            onError={(e) => e.target.parentNode.style.display = 'none'}
                           />
                         </button>
                       )}
@@ -428,7 +446,7 @@ const Pokedex = () => {
                       <h3>Tipos</h3>
                       <div className="modal-types">
                         {selectedPokemon.types.map(typeInfo => (
-                          <span 
+                          <span
                             key={typeInfo.type.name}
                             className={`type-badge type-${typeInfo.type.name}`}
                           >
@@ -445,8 +463,8 @@ const Pokedex = () => {
                           <div key={stat.stat.name} className="stat-bar">
                             <span className="stat-name">{formatStatName(stat.stat.name)}</span>
                             <div className="stat-bar-background">
-                              <div 
-                                className="stat-bar-fill" 
+                              <div
+                                className="stat-bar-fill"
                                 style={{ width: `${(stat.base_stat / 255) * 100}%` }}
                               >
                                 <span className="stat-value">{stat.base_stat}</span>
