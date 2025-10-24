@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Cadastro.css';
 
 const Cadastro = () => {
@@ -14,14 +15,13 @@ const Cadastro = () => {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  
   const navigate = useNavigate();
   const formRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (formRef.current) {
-        formRef.current.scrollIntoView({ 
+        formRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center'
         });
@@ -36,7 +36,6 @@ const Cadastro = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-
 
     if (errors[name]) {
       setErrors(prev => ({
@@ -57,7 +56,6 @@ const Cadastro = () => {
   const validateForm = () => {
     const newErrors = {};
 
-
     if (!formData.email) newErrors.email = 'Email é obrigatório';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email inválido';
 
@@ -69,14 +67,13 @@ const Cadastro = () => {
     if (!formData.confirmarSenha) newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
     else if (formData.senha !== formData.confirmarSenha) newErrors.confirmarSenha = 'Senhas não coincidem';
 
-
     if (!formData.politicaPrivacidade) newErrors.politicaPrivacidade = 'Você deve aceitar as Políticas de Privacidade';
     if (!formData.termosUsuario) newErrors.termosUsuario = 'Você deve aceitar os Termos de Usuário';
 
     return newErrors;
   };
 
-  const handleCadastro = (e) => {
+  const handleCadastro = async (e) => {
     e.preventDefault();
 
     const allTouched = {
@@ -90,16 +87,28 @@ const Cadastro = () => {
     setTouched(allTouched);
 
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length === 0) {
+      try {
+        const novoUsuario = {
+          nome: formData.usuario,
+          email: formData.email,
+          senha: formData.senha
+        };
 
-      console.log('Dados do cadastro:', formData);
-      navigate('/login');
+        await axios.post('http://localhost:8080/api/login', novoUsuario);
+        alert('✅ Cadastro realizado com sucesso!');
+        navigate('/login');
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          alert('⚠️ Este email já está cadastrado!');
+        } else {
+          alert('❌ Erro ao cadastrar. Tente novamente.');
+        }
+        console.error('Erro no cadastro:', error);
+      }
     } else {
-
       setErrors(newErrors);
-      
-
       const firstError = Object.keys(newErrors)[0];
       const errorElement = document.querySelector(`[name="${firstError}"]`);
       if (errorElement) {
@@ -114,15 +123,15 @@ const Cadastro = () => {
 
   return (
     <div className="cadastro-container">
-      <img 
-        src="pokeball-pc-hd 1.png" 
-        alt="Pokeball background" 
+      <img
+        src="pokeball-pc-hd 1.png"
+        alt="Pokeball background"
         className="cadastro-background"
       />
-      
+
       <div className="cadastro-card" ref={formRef}>
         <h1 className="cadastro-title">Cadastro</h1>
-        
+
         <form onSubmit={handleCadastro} className="cadastro-form">
           {/* Coluna Esquerda */}
           <div className="form-column left-column">
@@ -132,8 +141,8 @@ const Cadastro = () => {
                 <svg className="input-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="#666"/>
                 </svg>
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
                   className={`input-field ${errors.email ? 'error' : ''}`}
                   value={formData.email}
@@ -153,8 +162,8 @@ const Cadastro = () => {
                 <svg className="input-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" fill="#666"/>
                 </svg>
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   name="senha"
                   className={`input-field ${errors.senha ? 'error' : ''}`}
                   value={formData.senha}
@@ -177,8 +186,8 @@ const Cadastro = () => {
                 <svg className="input-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="#666"/>
                 </svg>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="usuario"
                   className={`input-field ${errors.usuario ? 'error' : ''}`}
                   value={formData.usuario}
@@ -198,8 +207,8 @@ const Cadastro = () => {
                 <svg className="input-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" fill="#666"/>
                 </svg>
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   name="confirmarSenha"
                   className={`input-field ${errors.confirmarSenha ? 'error' : ''}`}
                   value={formData.confirmarSenha}
@@ -217,8 +226,8 @@ const Cadastro = () => {
           {/* Checkboxes Obrigatórias */}
           <div className="checkboxes-group">
             <div className="checkbox-item">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 name="politicaPrivacidade"
                 checked={formData.politicaPrivacidade}
                 onChange={handleChange}
@@ -226,14 +235,14 @@ const Cadastro = () => {
                 className={`checkbox-input ${errors.politicaPrivacidade ? 'error-checkbox' : ''}`}
               />
               <span className="checkbox-text">
-                Concordo com as <span className="checkbox-link">Politicas de Privacidade</span>
+                Concordo com as <span className="checkbox-link">Políticas de Privacidade</span>
               </span>
               {errors.politicaPrivacidade && <span className="error-message checkbox-error">{errors.politicaPrivacidade}</span>}
             </div>
 
             <div className="checkbox-item">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 name="termosUsuario"
                 checked={formData.termosUsuario}
                 onChange={handleChange}
@@ -241,7 +250,7 @@ const Cadastro = () => {
                 className={`checkbox-input ${errors.termosUsuario ? 'error-checkbox' : ''}`}
               />
               <span className="checkbox-text">
-                Concordo com os <span className="checkbox-link">Termos de Usuario</span>
+                Concordo com os <span className="checkbox-link">Termos de Usuário</span>
               </span>
               {errors.termosUsuario && <span className="error-message checkbox-error">{errors.termosUsuario}</span>}
             </div>

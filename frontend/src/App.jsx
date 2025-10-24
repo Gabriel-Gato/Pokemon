@@ -8,6 +8,7 @@ import WelcomeSection from './components/Sections/WelcomeSection';
 import Pokedex from './components/Pokedex/Pokedex'
 import TCG from './components/TCG/TCG';
 import Competitivo from './components/Competitivo/Competitivo';
+import Perfil from './components/Perfil/Perfil'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path='/tcg' element={<TCG/>} />
         <Route path='/competitivo' element={<Competitivo/>} />
+        <Route path='/perfil' element={<Perfil/>} />
       </Routes>
     </div>
   );

@@ -9,20 +9,22 @@ const WelcomeSection = () => {
   return (
     <section className="section welcome-section">
       <div className="welcome-content">
-        <div className="text-content">
-          <p className="welcome-text">
-            Seja bem-vindo ao nosso site, um espaço dedicado inteiramente ao incrível mundo dos Pokémon!
-            Aqui, você encontrará informações detalhadas sobre centenas de criaturas que marcaram gerações
-            desde os clássicos da primeira geração até os mais recentes lançamentos.
-          </p>
-        </div>
-
+        {/* GIF NA ESQUERDA */}
         <div className="image-content">
           <img
             src="/fa00a1573843a45b25479e92d8dd1229ad329974.gif"
             alt="Pokémon"
             className="welcome-image"
           />
+        </div>
+
+        {/* TEXTO E BOTÃO NA DIREITA */}
+        <div className="text-content">
+          <p className="welcome-text">
+            Seja bem-vindo ao nosso site, um espaço dedicado inteiramente ao incrível mundo dos Pokémon!
+            Aqui, você encontrará informações detalhadas sobre centenas de criaturas que marcaram gerações
+            desde os clássicos da primeira geração até os mais recentes lançamentos.
+          </p>
         </div>
 
         <div className="button-container">

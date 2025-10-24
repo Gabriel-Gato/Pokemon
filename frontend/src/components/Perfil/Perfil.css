@@ -1,0 +1,272 @@
+.LoginConfig {
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+  background: white;
+  overflow: hidden;
+  font-family: 'Kanit', sans-serif;
+}
+
+
+.Ellipse3 {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  left: 84px;
+  top: 80px;
+  border-radius: 9999px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid #FF0000;
+}
+
+
+.Nome {
+  position: absolute;
+  left: 597px;
+  top: 260px;
+  text-align: left;
+  color: #7F7F7F;
+  font-size: 48px;
+  font-weight: 275;
+}
+
+.Verky {
+  position: absolute;
+  left: 615px;
+  top: 348px;
+  width: 400px;
+  text-align: left;
+  font-size: 32px;
+  font-weight: 300;
+  padding: 5px 10px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+
+.Line15 {
+  width: 419px;
+  height: 0;
+  position: absolute;
+  left: 616px;
+  top: 396px;
+  outline: 1px black solid;
+  outline-offset: -0.5px;
+}
+
+.EMail {
+  position: absolute;
+  left: 597px;
+  top: 460px;
+  text-align: center;
+  color: #7F7F7F;
+  font-size: 48px;
+  font-weight: 275;
+}
+
+.GabrielhngatoGmailCom {
+  position: absolute;
+  left: 618px;
+  top: 548px;
+  text-align: center;
+  color: black;
+  font-size: 32px;
+  font-weight: 300;
+}
+
+.Line16 {
+  width: 648px;
+  height: 0;
+  position: absolute;
+  left: 616px;
+  top: 596px;
+  outline: 1px black solid;
+  outline-offset: -0.5px;
+}
+
+
+.Rectangle11, .Rectangle12, .Rectangle13 {
+  width: 342px;
+  height: 85px;
+  position: absolute;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 85px;
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.Rectangle11:hover {
+  background-color: #5e64d8;
+}
+
+.Rectangle12:hover {
+  background-color: #ffcccc;
+}
+
+.Rectangle13:hover {
+  background-color: #e09e4f;
+}
+
+
+.Rectangle11 {
+  left: 627px;
+  top: 797px;
+  background-color: #767EEC;
+  color: white;
+}
+
+
+.Rectangle12 {
+  left: 113px;
+  top: 804px;
+  border: 1px #FF0000 solid;
+  color: #EF3131;
+  background: transparent;
+}
+
+
+.Rectangle13 {
+  left: 113px;
+  top: 548px;
+  background-color: #F3AF6B;
+  color: black;
+  font-weight: bold;
+}
+
+.Rectangle13 svg {
+  width: 20px;
+  height: 20px;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 0;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.password-input-group {
+  margin-bottom: 20px;
+}
+
+.password-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: 500;
+}
+
+.password-input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.password-input-group input:focus {
+  outline: none;
+  border-color: #767EEC;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  background-color: #F3AF6B;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.confirm-button:hover {
+  background-color: #e09e4f;
+}

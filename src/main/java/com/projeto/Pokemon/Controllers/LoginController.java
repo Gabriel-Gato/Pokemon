@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/login")
 @CrossOrigin(origins = "*")
 public class LoginController {
     @Autowired private LoginService loginService;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @PostMapping("upload/{id}")
     public ResponseEntity<Login> uploadImagem(@PathVariable Long id, @RequestParam("imagem")MultipartFile imagem) throws IOException{
@@ -102,14 +105,14 @@ public class LoginController {
         if (atualizacao.getNome() != null) {
             loginExistente.setNome(atualizacao.getNome());
         }
-        if (atualizacao.getSenha() != null) {
-            loginExistente.setSenha(atualizacao.getSenha());
+        if (atualizacao.getSenha() != null && !atualizacao.getSenha().isEmpty()) {
+
+            loginExistente.setSenha(passwordEncoder.encode(atualizacao.getSenha()));
         }
 
         Login atualizado = loginService.salvar(loginExistente);
         return ResponseEntity.ok(atualizado);
     }
-
 
     @DeleteMapping("/email/{email}")
     public ResponseEntity<Void> deletarPorEmail(@PathVariable String email){
@@ -131,6 +134,13 @@ public class LoginController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Erro ao deletar login" + e.getMessage());
         }
+    }
+
+    @PostMapping("verificar-senha/{email}")
+    public ResponseEntity<Boolean> verificarSenha(@PathVariable String email, @RequestBody Map<String, String> senhaRequest) {
+        String senha = senhaRequest.get("senha");
+        boolean senhaCorreta = loginService.verificarSenha(email, senha);
+        return ResponseEntity.ok(senhaCorreta);
     }
 
 

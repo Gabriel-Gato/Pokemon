@@ -83,7 +83,7 @@ public class LoginService {
             login.setEmail(loginAtualizado.getEmail());
         }
 
-        if (loginAtualizado.getSenha() != null)
+        if (loginAtualizado.getSenha() != null && !loginAtualizado.getSenha().isEmpty())
             login.setSenha(passwordEncoder.encode(loginAtualizado.getSenha()));
 
         if (loginAtualizado.getImagem() != null)
@@ -111,7 +111,13 @@ public class LoginService {
         return null;
     }
 
-
+    public boolean verificarSenha(String email, String senha) {
+        Login login = loginRepository.findByEmail(email);
+        if (login == null) {
+            return false;
+        }
+        return passwordEncoder.matches(senha, login.getSenha());
+    }
 
 
 
